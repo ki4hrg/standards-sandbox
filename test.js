@@ -1,2 +1,1 @@
-console.log("ok");
-console.log("t1");
+process.exit(1);
