@@ -54,11 +54,11 @@ jobs:
     # checks these passed in another run), and on a main run merge-on-green
     # dispatched for exactly the tree the PR tested.
     if: github.event.action != 'labeled' && !(github.event_name == 'workflow_dispatch' && inputs.tested == github.sha)
-    uses: ki4hrg/standards/.github/workflows/security.yml@e855c2be02395ba9bb69b901fadbd11700e8a20a
+    uses: ki4hrg/standards/.github/workflows/security.yml@19f8b5cfe95ec2bcca074c10afb1a0a03cbeeffe
     with:
       # Self-hosted for PRs when PR_RUNNER is set, as in check.
       runs-on: ${{ github.event_name == 'pull_request' && github.event.repository.private && github.event.pull_request.head.repo.full_name == github.repository && vars.PR_RUNNER || 'ubuntu-24.04' }}
-      package-managers: pnpm
+      package-managers: pnpm composer
 
   image:
     needs: [check, security]
@@ -86,7 +86,7 @@ jobs:
       pull-requests: write
       actions: write   # dispatches this workflow on main after merging
       checks: read     # waits for app checks (GitGuardian); private repos need it
-    uses: ki4hrg/standards/.github/workflows/merge-on-green.yml@e855c2be02395ba9bb69b901fadbd11700e8a20a
+    uses: ki4hrg/standards/.github/workflows/merge-on-green.yml@19f8b5cfe95ec2bcca074c10afb1a0a03cbeeffe
     with:
       # paths-ignore above doesn't apply to the dispatch after a merge; this does.
       skip-dispatch-paths: 'docs/* *.md'
