@@ -1,0 +1,32 @@
+name: release
+
+# Test of image.yml's release-tags and multi-arch inputs (deploy mode B), before the
+# standards move v1 to them. Publishing a GitHub release for a `vX.Y.Z` tag pushes
+# :X.Y.Z, :X.Y and :latest for amd64 and arm64 as one image; a pre-release (or a tag
+# with "-") pushes only its full version, so :latest doesn't move.
+# Pinned to @main while v1 hasn't moved; switch to @v1 afterwards.
+# No version job: this repo has no pyproject.toml (the template's caller checks the
+# tag against it).
+
+on:
+  release:
+    types: [published]
+
+# One publish per release; a re-run replaces it rather than racing it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    permissions:
+      contents: read
+      packages: write
+    uses: ki4hrg/standards/.github/workflows/image.yml@main
+    with:
+      push: true
+      release-tags: true
+      multi-arch: true
