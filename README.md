@@ -2,3 +2,5 @@
 
 A test bed for the reusable workflows in [ki4hrg/standards](https://github.com/ki4hrg/standards).
 Not an app: the code is a stub, and the deploy job only prints what it would deploy.
+
+merge-on-green deletes the merged branch (standards 19f8b5c).
